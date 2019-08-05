@@ -6,18 +6,15 @@
 
 @section('content')
     <div class="containerSurveys">
-        <div class="main__title">
-{{--            @if(empty($disp))--}}
-{{--                <h2 class="main__title">No hay Encuestas Disponibles</h2>--}}
-{{--            @else--}}
-{{--                <h2 class="main__title">Encuestas Disponibles</h2>--}}
-{{--            @endif--}}
-        </div>
-{{--        @empty($disp)--}}
-{{--            <div class="container">--}}
-{{--                <img class="ui large centered circular image" src="{{asset('img/11.jpg')}}" alt="">--}}
-{{--            </div>--}}
-{{--        @endempty--}}
+        @if(count($contestar)>0)
+            <h2 class="main__title">Encuestas Disponibles</h2>
+        @else
+            <h2 class="main__title">No hay Encuestas Disponibles</h2>
+            <div class="container">
+                <img class="ui large centered circular image" src="{{asset('img/11.jpg')}}" alt="">
+            </div>
+        @endif
+{{--        {{count($contestar)}}--}}
         <div class="ui special cards">
             @foreach($contestar as $encuesta)
 {{--                <h2>{{$encuesta->encuesta->nombre}}</h2>--}}
@@ -32,13 +29,13 @@
                         </div>
                         <img src="/img/elliot.jpg" alt="">
                     </div>
-                    <div class="content"><a class="header" href="#">{{$encuesta->encuesta->nombre}}</a>
+                    <div class="content"><a class="header" href="{{route('encuesta.show',$encuesta->encuesta->id)}}">{{$encuesta->encuesta->nombre}}</a>
                         <div class="meta">
                             <div class="date">Created in Sep 2014</div>
                         </div>
 {{--                        <div class="description">Encuesta sobre las Personas del ambiente laboral</div>--}}
                     </div>
-                    <a class="ui green button" href="#">¡Contestar!</a>
+                    <a class="ui green button" href="{{route('encuesta.show',$encuesta->encuesta->id)}}">¡Contestar!</a>
                 </div>
             @endforeach
         </div>

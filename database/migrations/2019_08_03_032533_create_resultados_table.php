@@ -16,6 +16,9 @@ class CreateResultadosTable extends Migration
         Schema::create('resultados', function (Blueprint $table) {
             $table->bigIncrements('id');
 
+            $table->unsignedBigInteger('encuesta_id');
+            $table->foreign('encuesta_id')->references('id')->on('encuestas')->onDelete('cascade');
+
             $table->unsignedBigInteger('pregunta_id');
             $table->foreign('pregunta_id')->references('id')->on('preguntas')->onDelete('cascade');
 

@@ -28,7 +28,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // Encuesta
 Route::group(['prefix' => 'encuesta'], function(){
-    Route::get('{encuesta}', 'EncuestaController@show')->name('encuesta.show');
+    Route::get('{encuesta}', 'EncuestaController@show')->name('encuesta.show'); // El mw que comprueba si el usuario ya contesta la encuesto esta declarado en el Controller
     Route::post('{encuesta}', 'EncuestaController@store')->name('encuesta.store');
 });
 
@@ -51,9 +51,11 @@ Route::group(['prefix' => 'admin'], function(){
 
     // CRUD
 
-    Route::resource('departamentos', 'DepartamentosController');
-    Route::resource('empresa', 'EmpresaController');
-    Route::resource('empleados', 'EmpleadosController');
+    Route::resource('departamentos', 'DepartamentosController')->middleware('auth:admin');
+    Route::resource('empresa', 'EmpresaController')->middleware('auth:admin');
+    Route::resource('empleados', 'EmpleadosController')->middleware('auth:admin');
+    Route::get('resultados', 'ResultadosController@select')->middleware('auth:admin');
+    Route::get('resultados/{departamento}', 'ResultadosController@show')->middleware('auth:admin')->name('resultados');
 
 
 });

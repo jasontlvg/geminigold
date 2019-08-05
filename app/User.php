@@ -41,31 +41,4 @@ class User extends Authenticatable
         return $this->belongsTo('App\Departamento');
     }
 
-    //
-
-    public function persona()
-    {
-        return $this->hasOne('App\personaEncuestaRes', 'owner_id');
-    }
-
-    public function practica()
-    {
-        return $this->hasOne('App\practicaEncuestaRes', 'owner_id');
-    }
-
-    public function proceso()
-    {
-        return $this->hasOne('App\procesoEncuestaRes', 'owner_id');
-    }
-
-    public function producto()
-    {
-        return $this->hasOne('App\productoEncuestaRes', 'owner_id');
-    }
-
-    public function aCambio()
-    {
-        return $this->hasOne('App\aCambioEncuestaRes', 'owner_id');
-    }
-    
 }
