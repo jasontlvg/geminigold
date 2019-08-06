@@ -1,7 +1,8 @@
 <?php
 
 use App\User;
-use App\personaEncuestaRes;
+use App\Estado;
+use App\Resultado;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
@@ -29,13 +30,13 @@ $factory->define(User::class, function (Faker $faker) {
         'jornada' => $faker->randomElement($array = array ('Diurna','Nocturna','Mixta')),
         'escolaridad' => $faker->randomElement($array = array ('Primaria','Secundaria','Preparatoria','Tecnica','Universidad')),
         'departamento_id' => $faker->randomElement($array = array (1,2,3,4,5)),
-        'password' => '$2y$10$bI44DSNtzqAsHMHkElLC0O4LLuFJj4RWFp3YyBF1r9jN4B52FJVXK', // password
+        'password' => '$2y$10$YkpG5/TAVO5kjp/IV3zmouIFhmafAi8Lti7m/QwaZ.5CmZmRJWN7y', // password
         'remember_token' => Str::random(10),
     ];
 });
 
-$factory->define(personaEncuestaRes::class, function (Faker $faker) {
+$factory->define(Resultado::class, function (Faker $faker) {
     return [
-        'p' => $faker->randomElement($array = array (1,2,3,4,5,6))
+        'r' => $faker->randomElement($array = array (1,2,3,4,5,6))
     ];
 });
