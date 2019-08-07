@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-require_once 'Objeto.php';
 
+use Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use App\Pregunta;
@@ -10,20 +10,23 @@ use App\EncuestaPregunta;
 use App\Departamento;
 use App\Resultado;
 use App\Encuesta;
+use App\Respuesta;
+use App\Classes\Objeto;
+use App\Classes\EncuestaObj;
+use App\Classes\PreguntaObj;
 
 class ResultadosController extends Controller
 {
 
     public function select()
     {
-        return view('resultados');
-        $departamentos= Departamento::select('id','nombre')->get();
-        return view('selectDepartamentoResultados', compact('departamentos'));
+//        return view('resultados');
+        return view('selectDepartamentoResultados');
     }
 
     public function show($idDepartamento)
     {
-        //        $resultadosObj=new Objeto();
+//        $resultadosObj=new Objeto();
 //        array_push($teclado->respuestas,'Si puedes imaginarlo, puedes programarlo');
 //        return $teclado->respuestas;
         $idDepartamento=6;
@@ -31,35 +34,39 @@ class ResultadosController extends Controller
         if(!$departamentos){
             return 'No existe';
         }
-
-        $resultado_encuesta_obj=[];
-        // Codigo real
-//        $encuestasDisponibles= Resultado::distinct()->pluck('encuesta_id');
-//        $encuestasDisponibles= Resultado::distinct()->where('id',1)->first();
-//        $encuestasDisponibles= Resultado::distinct()->first();
-//        return $encuestasDisponibles;
-
-//        $x= Resultado::where('encuesta_id',1)->where('pregunta_id',1)->count();
-//        return $x;
         // Obtener todas las respuestas de todas las encuestas que hayan sido contestados por empleados de x departamento
         $q= Resultado::whereHas('empleado',function($query) use ($idDepartamento) {
             $query->where('departamento_id',$idDepartamento);
         });
 
         $encuestasDisponibles=$q->distinct()->pluck('encuesta_id');
-        $resultados= $q->get();
+//        $resultados= $q->get();
+        $respuestas= Respuesta::all();
+//        return $respuestas;
+        $encuestas= [];
+//        return Response::json($encuestas);
+//        return sizeof($encuestasDisponibles);
 
-        foreach($encuestasDisponibles as $encuesta){ // $encuesta es el id de la encuesta
-            $preguntas=Encuesta::find($encuesta)->preguntas;
-            foreach($preguntas as $pregunta){
-                return $pregunta->id;
+        for($encuesta=0;$encuesta<sizeof($encuestasDisponibles);$encuesta++){
+//            $resultados=[];
+            $preguntasObj=[];
+            array_push($encuestas,new EncuestaObj);
+
+            // Agregando el Nombre de la Encuesta
+            $preguntas=Encuesta::find($encuestasDisponibles[$encuesta])->preguntas;
+            $nombreEncuesta= Encuesta::find($preguntas[0]->pivot->encuesta_id)->nombre;
+            $encuestas[$encuesta]->nombreEncuesta=$nombreEncuesta;
+
+            // Agregando las Respuestas Posibles
+            foreach($respuestas as $respuesta){
+                array_push($encuestas[$encuesta]->respuestas,$respuesta->respuesta);
             }
-            $q->where('encuesta_id',$encuesta)->count();
+
+            // Agregando preguntas arreglo
+
         }
-
-
-
-//        return $resultados[1]->empleado->departamento;
-        return view('resultados', compact('departamentos','idDepartamento','resultadosObj'));
+        return Response::json($encuestas);
+//        return $encuestas;
+        return view('resultados', compact('departamentos','idDepartamento'));
     }
 }
