@@ -4,7 +4,7 @@
 namespace App\Classes;
 
 
-class PreguntaObj
+class QuestionResult
 {
     var $question='';
     var $results=[];

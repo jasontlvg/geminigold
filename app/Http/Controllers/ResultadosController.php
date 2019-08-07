@@ -26,9 +26,6 @@ class ResultadosController extends Controller
 
     public function show($idDepartamento)
     {
-//        $resultadosObj=new Objeto();
-//        array_push($teclado->respuestas,'Si puedes imaginarlo, puedes programarlo');
-//        return $teclado->respuestas;
         $idDepartamento=6;
         $departamentos= Departamento::select('id','nombre')->get();
         if(!$departamentos){
@@ -39,34 +36,49 @@ class ResultadosController extends Controller
             $query->where('departamento_id',$idDepartamento);
         });
 
-        $encuestasDisponibles=$q->distinct()->pluck('encuesta_id');
-//        $resultados= $q->get();
+        $sql= Resultado::whereHas('empleado',function($query) use ($idDepartamento) {
+            $query->where('departamento_id',$idDepartamento);
+        });
+
+        $encuestasDisponibles=$q->distinct()->select('encuesta_id')->with('encuesta')->get();
         $respuestas= Respuesta::all();
-//        return $respuestas;
-        $encuestas= [];
-//        return Response::json($encuestas);
-//        return sizeof($encuestasDisponibles);
+        $resultados= $sql->get();
+//        return $resultados;
 
-        for($encuesta=0;$encuesta<sizeof($encuestasDisponibles);$encuesta++){
-//            $resultados=[];
-            $preguntasObj=[];
-            array_push($encuestas,new EncuestaObj);
+//        return $encuestasDisponibles;
 
-            // Agregando el Nombre de la Encuesta
-            $preguntas=Encuesta::find($encuestasDisponibles[$encuesta])->preguntas;
-            $nombreEncuesta= Encuesta::find($preguntas[0]->pivot->encuesta_id)->nombre;
-            $encuestas[$encuesta]->nombreEncuesta=$nombreEncuesta;
-
-            // Agregando las Respuestas Posibles
-            foreach($respuestas as $respuesta){
-                array_push($encuestas[$encuesta]->respuestas,$respuesta->respuesta);
+        $encuestasJS=[]; // El array que mandaremos a JS
+        foreach($encuestasDisponibles as $ed){
+            $ed= $ed->encuesta; // Cada $encuesta es un objeto, como usamos with, viene con los datos de la Encuesta de la tabla encuesta, a nosotros solo nos interesan esos datos, por eso puse eso, porque tambien sale el id de esa encuesta dos veces, y ya viene, asi que no la ocupo
+//            return $ed;
+            array_push($encuestasJS,new EncuestaObj);
+            $encuesta=end($encuestasJS); // Obtenemos la Encuesta ACTUAL (obj) a agregar datos
+            $encuesta->nombreEncuesta=$ed->nombre;
+            foreach($respuestas as $r){
+                array_push($encuesta->respuestas,$r->respuesta);
             }
-
-            // Agregando preguntas arreglo
-
+            $preguntas=Encuesta::find($ed->id)->preguntas;
+            foreach($preguntas as $pregunta){
+//                return $pregunta;
+                array_push($encuesta->preguntas,new PreguntaObj);
+                $pr= end($encuesta->preguntas);
+                $pr->question=$pregunta->pregunta; //aqui llenamos $encuesta.preguntas.question
+//                return $respuestas;
+                // Aqui
+                foreach($respuestas as $r){
+//                    return $r;
+                    foreach($resultados as $re){
+                        $i=0;
+                        if($re->encuesta_id==$ed->id && $re->pregunta_id==$pregunta->id && $re->respuesta_id==6){
+                            $i++;
+                        }
+                    }
+                    array_push($pr->results,$i);
+//                    $res= $sql->where('encuesta_id',$ed->id)->where('pregunta_id',$pregunta->id)->where('respuesta_id',1)->count();
+                }
+            }
         }
-        return Response::json($encuestas);
-//        return $encuestas;
-        return view('resultados', compact('departamentos','idDepartamento'));
+        return Response::json($encuestasJS);
+        return view('resultados', compact('departamentos','idDepartamento','encuestasJS'));
     }
 }

@@ -10,4 +10,9 @@ class Resultado extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function encuesta()
+    {
+        return $this->belongsTo('App\Encuesta');
+    }
 }
