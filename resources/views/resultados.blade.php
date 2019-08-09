@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+{{--    {{$encuestasJS}}--}}
     <div class="containerResultados">
         <div class="search">
             <select id="select">
@@ -28,8 +29,8 @@
 @section('js-link')
     <script type="text/javascript" src="{{asset('js/resultados.js')}}"></script>
     <script>
-        let xs='Jason';
-        let chart='chart';
+        var array = @json($encuestasJS);
+        console.log(array);
         var ctx = document.getElementById('myChart').getContext('2d');
         var myPieChart = new Chart(ctx, {
             type: 'doughnut',

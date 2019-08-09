@@ -26,7 +26,7 @@ class ResultadosController extends Controller
 
     public function show($idDepartamento)
     {
-        $idDepartamento=6;
+        $idDepartamento=1;
         $departamentos= Departamento::select('id','nombre')->get();
         if(!$departamentos){
             return 'No existe';
@@ -55,30 +55,43 @@ class ResultadosController extends Controller
             $encuesta=end($encuestasJS); // Obtenemos la Encuesta ACTUAL (obj) a agregar datos
             $encuesta->nombreEncuesta=$ed->nombre;
             foreach($respuestas as $r){
-                array_push($encuesta->respuestas,$r->respuesta);
+                array_push($encuesta->respuestas,$r->respuesta); // Aqui llenamos $encuesta.respuestas
             }
+
             $preguntas=Encuesta::find($ed->id)->preguntas;
+//            return $sql->get();
+//          $encuesta->preguntas ---> retorna un array
             foreach($preguntas as $pregunta){
 //                return $pregunta;
-                array_push($encuesta->preguntas,new PreguntaObj);
-                $pr= end($encuesta->preguntas);
-                $pr->question=$pregunta->pregunta; //aqui llenamos $encuesta.preguntas.question
+                array_push($encuesta->preguntas,new PreguntaObj); // Por cada pregunta, se agrega un objeto
+                // Arriba agregamos el objeto, el cual representa una pregunta, aqui lo que hacemos es
+                // tomar ese objeto que acabamos agregar al arreglo, como ya sabemos que el objeto que
+                // representa una pregunta lo acabamos de agregar, quiere decir que esta al final del
+                // arreglo
+                $qr= end($encuesta->preguntas); // TLX
+                $qr->question=$pregunta->pregunta;
+                $results= $qr->results;
 //                return $respuestas;
-                // Aqui
-                foreach($respuestas as $r){
-//                    return $r;
-                    foreach($resultados as $re){
-                        $i=0;
-                        if($re->encuesta_id==$ed->id && $re->pregunta_id==$pregunta->id && $re->respuesta_id==6){
+                // Aqui ocupo: el id de la pregunta, el id de la encuesta
+                foreach($respuestas as $respuesta){
+
+                    $i=0;
+                    foreach($resultados as $resultado){
+//                        return $resultado;
+//                        return $ed->id;
+//                        return $pregunta->id;
+//                        return $respuesta->id;
+                        if($resultado->encuesta_id==$ed->id && $resultado->pregunta_id==$pregunta->id && $resultado->respuesta_id==$respuesta->id){
                             $i++;
                         }
                     }
-                    array_push($pr->results,$i);
-//                    $res= $sql->where('encuesta_id',$ed->id)->where('pregunta_id',$pregunta->id)->where('respuesta_id',1)->count();
+                    array_push($qr->results,$i);
+
                 }
             }
         }
-        return Response::json($encuestasJS);
-        return view('resultados', compact('departamentos','idDepartamento','encuestasJS'));
+//        $teclado= Response::json($encuestasJS);
+        $calabaza='Calabaza';
+        return view('resultados', compact('departamentos','idDepartamento','encuestasJS','calabaza'));
     }
 }

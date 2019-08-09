@@ -14,7 +14,7 @@ class ResultadosTableSeeder extends Seeder
     {
         $numeroDeEncuestas=5;
         $desde=1;
-        $hasta=50;
+        $hasta=100;
 
         for($empleado=$desde;$empleado<=$hasta;$empleado++){
             for($encuesta=1;$encuesta<=$numeroDeEncuestas;$encuesta++){

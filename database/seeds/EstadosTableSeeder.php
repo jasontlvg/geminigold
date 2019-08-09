@@ -14,7 +14,7 @@ class EstadosTableSeeder extends Seeder
     {
         $numeroDeEncuestas=5;
         $desde=1;
-        $hasta=50;
+        $hasta=100;
         for($i=$desde;$i<=$hasta;$i++){
             for($encuestaActual=1;$encuestaActual<=$numeroDeEncuestas;$encuestaActual++){
                 $estado= new Estado;
