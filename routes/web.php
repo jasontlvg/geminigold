@@ -20,7 +20,7 @@ Route::get('lolo', function () {
     return view('personasEncuesta');
 });
 
-Route::get('resultados', 'ResultadosController@index');
+
 
 Auth::routes();
 
@@ -54,9 +54,9 @@ Route::group(['prefix' => 'admin'], function(){
     Route::resource('departamentos', 'DepartamentosController')->middleware('auth:admin');
     Route::resource('empresa', 'EmpresaController')->middleware('auth:admin');
     Route::resource('empleados', 'EmpleadosController')->middleware('auth:admin');
-    Route::get('resultados', 'ResultadosController@select')->middleware('auth:admin');
-    Route::get('resultados/{departamento}', 'ResultadosController@show')->middleware('auth:admin')->name('resultados');
-
+//    Route::get('resultados', 'ResultadosController@select')->middleware('auth:admin');
+//    Route::get('resultados/{departamento}', 'ResultadosController@show')->middleware('auth:admin')->name('resultados');
+    Route::get('resultados', 'ResultadosController@index')->name('resultados.index');
 
 });
 

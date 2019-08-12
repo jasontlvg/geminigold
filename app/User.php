@@ -41,4 +41,10 @@ class User extends Authenticatable
         return $this->belongsTo('App\Departamento');
     }
 
+    public function resultados()
+    {
+//        return $this->hasMany('App\Resultado','empleado_id','id')->where('encuesta_id',1); //XxX
+        return $this->hasMany('App\Resultado','empleado_id','id');
+    }
+
 }

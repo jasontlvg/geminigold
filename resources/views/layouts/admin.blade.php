@@ -28,7 +28,7 @@
                 <li class="header__nav__ul__li"><a class="header__nav__ul__li__a" href="{{route('departamentos.index')}}"> <i
                             class="header__nav__ul__li__a__icon fas fa-layer-group"></i>
                         <p class="header__nav__ul__li__a__title">Departamentos</p></a></li>
-                <li class="header__nav__ul__li"><a class="header__nav__ul__li__a" href="{{route('resultados',1)}}">
+                <li class="header__nav__ul__li"><a class="header__nav__ul__li__a" href="{{route('resultados.index')}}">
                         <i class="header__nav__ul__li__a__icon fas fa-book-reader"></i>
                         <p class="header__nav__ul__li__a__title">Resultados</p></a></li>
                 <li class="header__nav__ul__li"><a class="header__nav__ul__li__a header__nav__ul__li__a--off" href="{{route('admin.logout')}}">
