@@ -10,6 +10,6 @@ class Departamento extends Model
 
     public function empleados()
     {
-        return $this->hasMany('App\User')->select('id');
+        return $this->hasMany('App\User')->select('id','departamento_id');
     }
 }
