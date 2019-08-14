@@ -44,7 +44,7 @@ class User extends Authenticatable
     public function resultados()
     {
 //        return $this->hasMany('App\Resultado','empleado_id','id')->where('encuesta_id',1); //XxX
-        return $this->hasMany('App\Resultado','empleado_id','id')->select('id','encuesta_id','pregunta_id','respuesta_id','empleado_id');
+        return $this->hasMany('App\Resultado','empleado_id','id');
     }
 
 }

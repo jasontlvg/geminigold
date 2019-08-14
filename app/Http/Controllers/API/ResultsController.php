@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Encuesta;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Departamento;
@@ -56,6 +57,7 @@ class ResultsController extends Controller
 //            return 'Nada';
 //        }
 //        return $request->input('message');
+
         $encuesta_id=$request->get('encuesta');
         $idDepartamento=$request->get('departamento');
         $empleados= Departamento::with(['empleados.resultados' => function ($q) use ($encuesta_id) {
@@ -64,6 +66,11 @@ class ResultsController extends Controller
         return $empleados;
     }
 
+    public function preguntasEncuesta($id)
+    {
+        $preguntas= Encuesta::find($id)->preguntas;
+        return $preguntas;
+    }
     /**
      * Update the specified resource in storage.
      *

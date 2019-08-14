@@ -37,12 +37,12 @@ class ResultadosController extends Controller
         })->distinct()->select('encuesta_id')->with('encuesta')->get();
 
 //        return $encuestasDisponibles;
-
+        $idDepartamento=1;
         $encuesta_id=2;
         $empleados= Departamento::with(['empleados.resultados' => function ($q) use ($encuesta_id) {
             $q->where('encuesta_id', $encuesta_id);
         }])->where('id',$idDepartamento)->select('id','nombre')->get();
-//        return $empleados;
+        return $empleados;
 
 //        $empleados->with('resultados');
 //        foreach($empleados as $empleado){
