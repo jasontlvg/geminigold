@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Encuesta;
+use App\Respuesta;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Departamento;
@@ -51,25 +52,59 @@ class ResultsController extends Controller
      */
     public function show(Request $request)
     {
-//        if($request->get('departamento') == 2){
+//        return 'Hola';
+//        if($request->get('departamento_id') == 3){
 //            return 'Exito';
 //        }else{
 //            return 'Nada';
 //        }
 //        return $request->input('message');
+        // Original
+//        $encuesta_id=$request->get('encuesta');
+//        $idDepartamento=$request->get('departamento');
+//        $empleados= Departamento::with(['empleados.resultados' => function ($q) use ($encuesta_id) {
+//            $q->where('encuesta_id', $encuesta_id);
+//        }])->where('id',$idDepartamento)->select('id','nombre')->get();
+//        return $empleados;
+        $enviar=[];
+        // Necesario
+        $departamento=$request->get('departamento_id');
+        $encuesta=$request->get('encuesta_id');
+        $pregunta=$request->get('pregunta_id');
 
-        $encuesta_id=$request->get('encuesta');
-        $idDepartamento=$request->get('departamento');
-        $empleados= Departamento::with(['empleados.resultados' => function ($q) use ($encuesta_id) {
-            $q->where('encuesta_id', $encuesta_id);
-        }])->where('id',$idDepartamento)->select('id','nombre')->get();
-        return $empleados;
+        $respuestas= Respuesta::all();
+//        return $respuestas;
+
+
+        foreach($respuestas as $respuesta){
+
+            $resultados= Resultado::whereHas('empleado',function ($query) use ($departamento){
+                $query->where('departamento_id',$departamento);
+            })->where('encuesta_id',$encuesta)->where('pregunta_id',$pregunta)->where('respuesta_id',$respuesta->id)->count();
+
+            array_push($enviar,$resultados);
+
+        }
+
+        return $enviar;
+
+        $resultados= Resultado::whereHas('empleado',function ($query) use ($departamento){
+            $query->where('departamento_id',$departamento);
+        })->where('encuesta_id',$encuesta)->where('pregunta_id',$pregunta)->where('respuesta_id',6)->get();
+//        return Resultado::find(1)->empleado;
+        return $resultados;
     }
 
     public function preguntasEncuesta($id)
     {
         $preguntas= Encuesta::find($id)->preguntas;
         return $preguntas;
+    }
+
+    public function respuestas()
+    {
+        $respuestas= Respuesta::pluck('respuesta');
+        return $respuestas;
     }
     /**
      * Update the specified resource in storage.

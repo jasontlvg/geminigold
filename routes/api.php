@@ -24,8 +24,9 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('api/results', 'API\ResultsController@index')->name('results.index'); // El mw que comprueba si el usuario ya contesta la encuesto esta declarado en el Controller
     Route::get('api/results/encuestas/{departamento}', 'API\ResultsController@encuestasDisponibles')->name('results.encdisp'); // El mw que comprueba si el usuario ya contesta la encuesto esta declarado en el Controller
     Route::get('api/results/encuesta/preguntas/{encuesta}', 'API\ResultsController@preguntasEncuesta')->name('results.asdsaddds'); // El mw que comprueba si el usuario ya contesta la encuesto esta declarado en el Controller
+    Route::get('api/results/encuesta/respuestas', 'API\ResultsController@respuestas')->name('results.asdqew'); // El mw que comprueba si el usuario ya contesta la encuesto esta declarado en el Controller
 //    Route::post('api/results', 'API\ResultsController@store')->name('results.store');
-    Route::post('api/results/lolo', 'API\ResultsController@show')->name('results.show'); // El mw que comprueba si el usuario ya contesta la encuesto esta declarado en el Controller
+    Route::post('api/results/encuesta', 'API\ResultsController@show')->name('results.show'); // El mw que comprueba si el usuario ya contesta la encuesto esta declarado en el Controller
     Route::put('api/results/{result}', 'API\ResultsController@update')->name('results.update'); // El mw que comprueba si el usuario ya contesta la encuesto esta declarado en el Controller
     Route::delete('api/results/{result}', 'API\ResultsController@destroy')->name('results.destroy'); // El mw que comprueba si el usuario ya contesta la encuesto esta declarado en el Controller
 });
