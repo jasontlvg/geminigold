@@ -57,7 +57,7 @@ class DepartamentosController extends Controller
             return redirect(route('departamentos.index'));
 
         }else{
-            return 'Errororororor';
+            return 'NO GAME NO LIFE';
         }
     }
 
