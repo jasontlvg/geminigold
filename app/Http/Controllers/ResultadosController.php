@@ -42,7 +42,7 @@ class ResultadosController extends Controller
         $empleados= Departamento::with(['empleados.resultados' => function ($q) use ($encuesta_id) {
             $q->where('encuesta_id', $encuesta_id);
         }])->where('id',$idDepartamento)->select('id','nombre')->get();
-        return $empleados;
+//        return $empleados;
 
 //        $empleados->with('resultados');
 //        foreach($empleados as $empleado){
