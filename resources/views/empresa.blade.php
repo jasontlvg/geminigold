@@ -31,7 +31,7 @@
                                 <td class="table__tbody__row__col">{{$empresa[0]->giro}}</td>
                                 <td class="table__tbody__row__col">{{$empresa[0]->proceso}}</td>
                                 <td class="table__tbody__row__col table__tbody__row__col--mas">
-                                    <a class="table__tbody__row__col__a table__tbody__row__col--mas__a table__tbody__row__col--mas__a--edit" href="/editarEmpresas.html"><i class="fas fa-edit"></i></a>
+                                    <a class="table__tbody__row__col__a table__tbody__row__col--mas__a table__tbody__row__col--mas__a--edit" href="{{route('empresa.edit',$empresa[0]->id)}}"><i class="fas fa-edit"></i></a>
                                     <div class="table__tbody__row__col__a table__tbody__row__col--mas__a table__tbody__row__col--mas__a--trash" href="#">
                                         <form action="{{route('empresa.destroy', $empresa[0]->id)}}" method="POST" id="form-trash">
                                             @csrf

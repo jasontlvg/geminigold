@@ -16,22 +16,27 @@
                             </button>
                         </div>
                         <div class="modal-body" id="tlx">
-                            <form action="">
+                            <form action="{{route('empresa.update', $empresa->id)}}" method="POST">
+                                @csrf
+                                {{method_field('PUT')}}
                                 <div class="form-group">
                                     <label>Nombre</label>
                                     <input class="input form-control" name="nombre" type="text"
-                                           id="exampleInputPassword1" placeholder=""></div>
+                                           id="exampleInputPassword1" placeholder="" value="{{$empresa->nombre}}">
+                                </div>
                                 <div class="form-group">
                                     <label>Giro</label>
                                     <input class="input form-control" name="giro" type="text"
-                                           id="exampleInputPassword1" placeholder=""></div>
+                                           id="exampleInputPassword1" placeholder="" value="{{$empresa->giro}}">
+                                </div>
                                 <div class="form-group">
                                     <label>Proceso</label>
                                     <input class="input form-control" name="proceso" type="text"
-                                           id="exampleInputPassword1" placeholder=""></div>
-                                <button type="submit" class="btn btn-primary agregar" id="editarBoton">Agregar
+                                           id="exampleInputPassword1" placeholder="" value="{{$empresa->proceso}}">
+                                </div>
+                                <button type="submit" class="btn btn-primary agregar" id="editarBoton">Salvar
                                 </button>
-                                <a class="btn btn-secondary cancelar" href="/empresas.html" id="regresarBoton">Cancelar</a>
+                                <a class="btn btn-secondary cancelar" href="{{route('empresa.index')}}" id="regresarBoton">Cancelar</a>
                             </form>
                         </div>
                     </div>
@@ -43,7 +48,7 @@
 @endsection
 
 @section('js-link')
-    <script type="text/javascript" src="{{asset('js/editarEmpresas.18e905db810b76271490.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/editarEmpresas.js')}}"></script>
 @endsection
 
 
