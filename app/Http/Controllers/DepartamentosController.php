@@ -57,7 +57,7 @@ class DepartamentosController extends Controller
             return redirect(route('departamentos.index'));
 
         }else{
-            return 'NO GAME NO LIFE';
+            return 'Errororororor';
         }
     }
 
@@ -116,6 +116,7 @@ class DepartamentosController extends Controller
         $dep= Departamento::where('id', $id)->delete();
         $deps= Departamento::all();
         $depEliminado= true;
-        return view('departamentos', compact('depEliminado', 'deps'));
+//        return view('departamentos', compact('depEliminado', 'deps'));
+        return redirect(route('departamentos.index'));
     }
 }
