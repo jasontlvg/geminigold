@@ -143,24 +143,31 @@ class ResultsController extends Controller
 
 
         // Opcion 2
-//        $encuestasDisponibles=Resultado::whereHas('empleado',function($query) use ($idDepartamento) {
-//            $query->where('departamento_id',$idDepartamento);
-//        })->distinct()->select('encuesta_id')->with('encuesta')->get();
+        $encuestasDisponibles=Resultado::whereHas('empleado',function($query) use ($departamento) {
+            $query->where('departamento_id',$departamento);
+        })->distinct()->select('encuesta_id')->with('encuesta')->get();
 
 
 
-        $encuestas= Encuesta::all();
+        $encuestas= $encuestasDisponibles;
+//        return $encuestas;
+//        $encuestas= Encuesta::all();
         $respuestas= Respuesta::all();
         $resultadosXencuesta= [];
 //        return $encuestas;
 
         foreach ($encuestas as $encuesta){
             $resultados= Resultado::whereHas('empleado',function ($query) use ($departamento,$encuesta){
-                $query->where('departamento_id',$departamento)->where('encuesta_id', $encuesta->id);
+                $query->where('departamento_id',$departamento)->where('encuesta_id', $encuesta->encuesta_id);
             })->get();
             array_push($resultadosXencuesta, $resultados);
         }
 //        return $resultadosXencuesta;
+
+
+
+
+
         $resultadosDeLasPreguntasPorEncuesta=[];
         foreach($resultadosXencuesta as $resultadosEncuesta){
             // Despues de dividir los resultados
@@ -181,6 +188,7 @@ class ResultsController extends Controller
                 $personasQueContestaron5=0;
                 $personasQueContestaron6=0;
                 foreach ($resultadosEncuesta as $resultado){
+//                    return $resultado;
                     if($resultado->pregunta_id == $preguntaId){
 
                         if($resultado->respuesta_id == 1){
@@ -210,8 +218,6 @@ class ResultsController extends Controller
                             $personasQueContestaron6++;
                         }
 
-
-
                     }
 
                 }
@@ -222,12 +228,8 @@ class ResultsController extends Controller
                 array_push($l, $personasQueContestaron4);
                 array_push($l, $personasQueContestaron5);
                 array_push($l, $personasQueContestaron6);
-//                return $l;
-
-//                array_push($encuestaResultados, $l)
                 array_push($arr,$l);
                 $l=[];
-
             }
 
         }
