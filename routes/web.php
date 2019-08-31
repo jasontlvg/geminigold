@@ -17,7 +17,7 @@ Route::get('/', function () {
 });
 
 Route::get('lolo', function () {
-    return view('personasEncuesta');
+    return view('prueba');
 });
 
 

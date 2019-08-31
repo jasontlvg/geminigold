@@ -23,7 +23,7 @@ class ResultsController extends Controller
         return $departamentos;
     }
 
-    public function encuestasDisponibles($id)
+    public function encuestasDisponibles($id) // Las encuestas disponibles de ese departamento (recuerda que, digamos, para entender mejor, hay un solo empleado de ese departamento, y ese empleado nomas contesto una encuesta, entonces, solo hay resultados para esa encuesta, porque solo ese han contestado, no quiero traer todos las encuestas si no tienen resultados para ese departamento)
     {
         $idDepartamento=$id;
         $encuestasDisponibles=Resultado::whereHas('empleado',function($query) use ($idDepartamento) {
@@ -127,5 +127,110 @@ class ResultsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    // 2019
+
+    public function getData($departamento)
+    {
+        $arr=[];
+        $encuestaResultados=[];
+        // Opcion 1
+//        $resultados= Resultado::whereHas('empleado',function ($query) use ($departamento){
+//            $query->where('departamento_id',$departamento);
+//        })->get();
+//        return $resultados;
+
+
+        // Opcion 2
+//        $encuestasDisponibles=Resultado::whereHas('empleado',function($query) use ($idDepartamento) {
+//            $query->where('departamento_id',$idDepartamento);
+//        })->distinct()->select('encuesta_id')->with('encuesta')->get();
+
+
+
+        $encuestas= Encuesta::all();
+        $respuestas= Respuesta::all();
+        $resultadosXencuesta= [];
+//        return $encuestas;
+
+        foreach ($encuestas as $encuesta){
+            $resultados= Resultado::whereHas('empleado',function ($query) use ($departamento,$encuesta){
+                $query->where('departamento_id',$departamento)->where('encuesta_id', $encuesta->id);
+            })->get();
+            array_push($resultadosXencuesta, $resultados);
+        }
+//        return $resultadosXencuesta;
+        $resultadosDeLasPreguntasPorEncuesta=[];
+        foreach($resultadosXencuesta as $resultadosEncuesta){
+            // Despues de dividir los resultados
+            // por encuesta, seleccionamos los resultados de una encuesta nadamas
+            // $resultadosEncuesta, es una lista con todas las respuestas
+            $encuesta_id= $resultadosEncuesta[0]->encuesta_id;
+
+            $preguntas= Encuesta::find($encuesta_id)->preguntas;
+//            return $preguntas;
+            $l=[]; // Una $l representa los resultados de una sola pregunta de una Encuesta
+            foreach ($preguntas as $pregunta){
+                $preguntaId= $pregunta->id;
+//                return $pregunta->pregunta;
+                $personasQueContestaron1=0;
+                $personasQueContestaron2=0;
+                $personasQueContestaron3=0;
+                $personasQueContestaron4=0;
+                $personasQueContestaron5=0;
+                $personasQueContestaron6=0;
+                foreach ($resultadosEncuesta as $resultado){
+                    if($resultado->pregunta_id == $preguntaId){
+
+                        if($resultado->respuesta_id == 1){
+                            $personasQueContestaron1++;
+                        }
+
+                        if($resultado->respuesta_id == 2){
+                            $personasQueContestaron2++;
+                        }
+
+                        if($resultado->respuesta_id == 3){
+                            $personasQueContestaron3++;
+                        }
+
+
+                        if($resultado->respuesta_id == 4){
+                            $personasQueContestaron4++;
+                        }
+
+
+                        if($resultado->respuesta_id == 5){
+                            $personasQueContestaron5++;
+                        }
+
+
+                        if($resultado->respuesta_id == 6){
+                            $personasQueContestaron6++;
+                        }
+
+
+
+                    }
+
+                }
+
+                array_push($l, $personasQueContestaron1);
+                array_push($l, $personasQueContestaron2);
+                array_push($l, $personasQueContestaron3);
+                array_push($l, $personasQueContestaron4);
+                array_push($l, $personasQueContestaron5);
+                array_push($l, $personasQueContestaron6);
+//                return $l;
+
+//                array_push($encuestaResultados, $l)
+                array_push($arr,$l);
+                $l=[];
+
+            }
+
+        }
+        return $arr;
     }
 }
