@@ -350,7 +350,8 @@ class ResultsController extends Controller
                     }
                 }
 
-                array_push($promediosPorPregunta[$idEncuesta], $sum/$sumTotal); // $sum/$sumTotal, falta delimitar los decimales
+//                array_push($promediosPorPregunta[$idEncuesta], $sum/$sumTotal); // $sum/$sumTotal, falta delimitar los decimales
+                array_push($promediosPorPregunta[$idEncuesta], round($sum/$sumTotal, 4)); // $sum/$sumTotal, falta delimitar los decimales
 //                return $sumTotal;
             }
         }
@@ -359,9 +360,20 @@ class ResultsController extends Controller
 //        return $resultados;
 
         $obj=[];
+
+
+
+//        array_push($obj, $encuestasDisponibles);
+//        array_push($obj, $resultados);
+//        array_push($obj, $promediosPorPregunta);
+
         array_push($obj, $encuestasDisponibles);
         array_push($obj, $resultados);
         array_push($obj, $promediosPorPregunta);
+
+
+
+
         return $obj;
     }
 
